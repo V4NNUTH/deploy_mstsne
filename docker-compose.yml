@@ -1,0 +1,65 @@
+version: "3.9"
+
+services:
+
+  # ── FastAPI backend ──────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: mstsne_backend
+    restart: unless-stopped
+    volumes:
+      - tmp_data:/app/tmp          # Temp experiment files (auto-cleaned after 2h)
+      - /home/ams-lab/Desktop/vannuth/UNamur/ms-tsne-explorer/dataset:/app/dataset:ro
+    environment:
+      - PYTHONUNBUFFERED=1
+    # GPU support — comment out if running CPU-only
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    networks:
+      - mstsne_net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/gpu-status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # ── React frontend (nginx) ───────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # When nginx proxies /api → backend, frontend JS should call relative paths.
+        # If you access via IP directly, set this to http://<your-server-ip>:8000
+        VITE_API_URL: ""
+    container_name: mstsne_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"          # Access at http://<server-ip>:3000
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - backend
+    networks:
+      - mstsne_net
+
+  # ── Optional: expose backend directly for debugging ─────────────────────────
+  # Uncomment the ports below if you want direct API access at :8000
+  # backend:
+  #   ports:
+  #     - "8000:8000"
+
+volumes:
+  tmp_data:
+    driver: local
+
+networks:
+  mstsne_net:
+    driver: bridge

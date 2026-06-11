@@ -1,0 +1,173 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Vuexy core palette */
+  --vx-bg:          #f4f5fa;
+  --vx-bg-card:     #ffffff;
+  --vx-bg-input:    #f1f1f4;
+  --vx-bg-hover:    #f0f0f8;
+  --vx-border:      #dbdade;
+  --vx-border-soft: #e6e6ea;
+
+  /* Vuexy accent purple */
+  --vx-primary:       #7367f0;
+  --vx-primary-light: #9e95f5;
+  --vx-primary-dim:   rgba(115,103,240,.15);
+  --vx-primary-glow:  rgba(115,103,240,.35);
+
+  /* Status colours */
+  --vx-success:      #28c76f;
+  --vx-success-dim:  rgba(40,199,111,.15);
+  --vx-warning:      #ff9f43;
+  --vx-warning-dim:  rgba(255,159,67,.15);
+  --vx-danger:       #ea5455;
+  --vx-danger-dim:   rgba(234,84,85,.15);
+  --vx-info:         #00cfe8;
+  --vx-info-dim:     rgba(0,207,232,.15);
+
+  /* Text */
+  --vx-text:        #444050;
+  --vx-text2:       #6e6b78;
+  --vx-text3:       #a8a4b0;
+
+  /* Misc */
+  --vx-radius:   8px;
+  --vx-radius-lg: 12px;
+  --vx-shadow:   0 4px 24px rgba(10,12,28,.45);
+  --vx-shadow-sm:0 2px 10px rgba(10,12,28,.3);
+
+  /* Node colours for workflow */
+  --node-idle:      #f4f5fa;
+  --node-running:   rgba(255,159,67,.12);
+  --node-done:      rgba(40,199,111,.10);
+  --node-error:     rgba(234,84,85,.10);
+  --edge-color:     #a09cc0;
+  --edge-active:  #7367f0;
+
+  font-family: 'Public Sans', sans-serif;
+  font-size: 14px;
+}
+
+body {
+  background: var(--vx-bg);
+  color: var(--vx-text);
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--vx-border); border-radius: 3px; }
+
+/* Utility */
+.mono { font-family: 'IBM Plex Mono', monospace; }
+
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 2px 9px; border-radius: 20px;
+  font-size: 11px; font-weight: 600; letter-spacing: .02em;
+  white-space: nowrap;
+}
+.badge-primary { background: var(--vx-primary-dim); color: var(--vx-primary-light); }
+.badge-success { background: var(--vx-success-dim); color: var(--vx-success); }
+.badge-warning { background: var(--vx-warning-dim); color: var(--vx-warning); }
+.badge-danger  { background: var(--vx-danger-dim);  color: var(--vx-danger); }
+.badge-info    { background: var(--vx-info-dim);    color: var(--vx-info); }
+.badge-muted   { background: rgba(255,255,255,.06);  color: var(--vx-text-2); }
+
+/* Button */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 16px; border-radius: var(--vx-radius);
+  font-size: 13px; font-weight: 500;
+  cursor: pointer; border: none; transition: all .15s;
+  font-family: inherit;
+}
+.btn:hover { filter: brightness(1.1); }
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--vx-primary); color: #fff; box-shadow: 0 4px 18px var(--vx-primary-glow); }
+.btn-outline  { background: transparent; color: var(--vx-primary); border: 1px solid var(--vx-primary); }
+.btn-ghost    { background: transparent; color: var(--vx-text-2); border: 1px solid var(--vx-border); }
+.btn-danger   { background: var(--vx-danger); color: #fff; }
+.btn-success  { background: var(--vx-success); color: #fff; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn:disabled { opacity: .45; cursor: not-allowed; filter: none; }
+
+/* Card */
+.card {
+  background: var(--vx-bg-card);
+  border: 1px solid var(--vx-border-soft);
+  border-radius: var(--vx-radius-lg);
+  box-shadow: var(--vx-shadow-sm);
+}
+
+/* Input */
+.vx-input {
+  background: var(--vx-bg-input); border: 1px solid var(--vx-border);
+  color: var(--vx-text); border-radius: var(--vx-radius);
+  padding: 7px 12px; font-size: 13px; width: 100%;
+  font-family: inherit; outline: none; transition: border-color .15s;
+}
+.vx-input:focus { border-color: var(--vx-primary); }
+.vx-input::placeholder { color: var(--vx-text-3); }
+
+select.vx-input { cursor: pointer; }
+
+/* Field label */
+.field-label {
+  font-size: 11px; font-weight: 600; letter-spacing: .04em;
+  text-transform: uppercase; color: var(--vx-text-2); display: block; margin-bottom: 5px;
+}
+
+/* Divider */
+.divider { height: 1px; background: var(--vx-border-soft); margin: 12px 0; }
+
+/* Pulse animation for running state */
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 var(--vx-primary-glow); }
+  70%  { box-shadow: 0 0 0 8px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.pulse { animation: pulse-ring 1.6s infinite; }
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in { animation: fade-in .25s ease both; }
+
+.device-toggle {
+  display: flex; gap: 6px; margin: 8px 12px 14px;
+}
+.device-btn {
+  flex: 1; padding: 5px 0; border-radius: 6px; font-size: 11px;
+  font-weight: 600; cursor: pointer; border: 1px solid var(--vx-border);
+  background: transparent; color: var(--vx-text2); font-family: inherit;
+  transition: all .15s;
+}
+.device-btn.active {
+  background: var(--vx-primary-dim); color: var(--vx-primary-l);
+  border-color: var(--vx-primary);
+}
+.device-btn.disabled { opacity: .4; cursor: not-allowed; }
+
+.node-edit-btn {
+  position: absolute; top: 4px; right: 4px;
+  padding: 2px 5px; border-radius: 4px; font-size: 9px;
+  font-weight: 700; border: 1px solid var(--vx-border);
+  background: var(--vx-bg); color: var(--vx-text3);
+  cursor: pointer; opacity: 0; transition: opacity .15s;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.workflow-node:hover .node-edit-btn { opacity: 1; }
+
+.editor-inline {
+  display: flex; align-items: stretch;
+  justify-content: flex-end;
+  width: 100%; height: 100%;
+}
+.editor-inline .editor-sidebar {
+  width: 100%; max-width: 100%;
+  box-shadow: none;
+}
