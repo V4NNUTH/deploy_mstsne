@@ -80,6 +80,22 @@ automatic and clearly indicated in the **GPU Check** node).
 
 ---
 
+## Screenshots
+
+| Workflow canvas | Code editor |
+|:---:|:---:|
+| ![Workflow](figure/workflow.png) | ![Code Editor](figure/codeeditor.png) |
+
+| Configure | Results |
+|:---:|:---:|
+| ![Configure](figure/congfigure.png) | ![Results](figure/results.png) |
+
+| Figures |
+|:---:|
+| ![Figures](figure/figures.png) |
+
+---
+
 ## System architecture
 
 ```
