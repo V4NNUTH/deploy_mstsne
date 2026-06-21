@@ -1,14 +1,5 @@
 # Ms t-SNE Explorer — Deployment Guide
 # Server: Intel i7-12700, 62GB RAM, RTX 3080 (10GB VRAM)
-# Access via: ssh ams.lab  (Tailscale: 100.100.31.114)
-
-## 1. Clone / copy repo to server
-
-```bash
-# From your local machine
-scp -r ms-tsne-explorer/ ams.lab:~/Desktop/vannuth/UNamur/ms-tsne-explorer/
-# OR use VS Code Remote SSH + drag/drop
-```
 
 ## 2. Install Docker + nvidia-container-toolkit (if not already)
 
@@ -31,8 +22,7 @@ sudo systemctl restart docker
 ## 3. Build and start
 
 ```bash
-cd ~/Desktop/vannuth/UNamur/ms-tsne-explorer/
-
+cd (to you local file that store deploy_mstsne folder)
 # First time (builds images)
 docker compose up --build -d
 
@@ -45,8 +35,8 @@ docker compose down
 
 ## 4. Access the app
 
-- Web UI:  http://100.100.31.114:3000   (via Tailscale from your laptop)
-- API:     http://100.100.31.114:3000/api/gpu-status
+- Web UI:  http://localhost:3000   
+- API:     http://localhost:3000/api/gpu-status
 
 ## 5. Check GPU is passed through
 
@@ -73,12 +63,4 @@ docker compose up --build -d frontend   # frontend changes
 docker compose up --build -d            # both
 ```
 
-## 9. Run in tmux (keep alive on SSH disconnect)
 
-```bash
-tmux new -s mstsne
-cd ~/Desktop/vannuth/UNamur/ms-tsne-explorer/
-docker compose up --build
-# Ctrl+B, D to detach
-# tmux attach -t mstsne to reattach
-```
